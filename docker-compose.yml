@@ -1,0 +1,43 @@
+version: "3.7"
+services: # specify the services to run on this node ( containers )
+  backend:
+    build: ./backend # finds the docker container and executes the file
+    restart: always
+    volumes: # folder mein kya kya chize h
+      - ./backend:/backend
+      - ./backend/node_modules
+    networks: # have to define a network : containers communicate on a network , the connecting line on a network
+      - web-net
+    environment:
+      - TZ=Asia/Kolkata
+  frontend:
+    build: ./frontend
+    restart: unless-stopped
+    volumes:
+      - ./frontend:/frontend
+      - ./frontend/node_modules
+    environment:
+      - NODE_ENV=development # environment variable
+      - CHOKIDAR_USEPOLLING='true' # as a file is changes , rebuild the container
+    ports: # localhost : container port
+      - "3000:3000"
+    depends_on: # fronted container depends on the frontend
+      - backend
+    networks:
+      - web-net
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "8000:80"
+    volumes:
+      - ./nginx:/etc/nginx/conf.d/
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - web-net
+
+networks:
+  web-net:
+    driver: bridge
