@@ -1,43 +1,57 @@
-version: "3.7"
-services: # specify the services to run on this node ( containers )
-  backend:
-    build: ./backend # finds the docker container and executes the file
-    restart: always
-    volumes: # folder mein kya kya chize h
-      - ./backend:/backend
-      - ./backend/node_modules
-    networks: # have to define a network : containers communicate on a network , the connecting line on a network
-      - web-net
-    environment:
-      - TZ=Asia/Kolkata
+version: "3"
+services:
+
   frontend:
-    build: ./frontend
-    restart: unless-stopped
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
     volumes:
-      - ./frontend:/frontend
-      - ./frontend/node_modules
-    environment:
-      - NODE_ENV=development # environment variable
-      - CHOKIDAR_USEPOLLING='true' # as a file is changes , rebuild the container
-    ports: # localhost : container port
-      - "3000:3000"
-    depends_on: # fronted container depends on the frontend
+      - ./frontend/src:/usr/app/src
+      - ./frontend/public:/usr/app/public
+    depends_on:
       - backend
-    networks:
-      - web-net
+    environment:
+      - REACT_APP_SERVER=/backend
+      - CHOKIDAR_USEPOLLING=true
+    command: npm start
+    stdin_open: true
+    tty: true
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - 4000:4000
+    volumes:
+      - ./backend:/usr/app/src
+    depends_on:
+      - db
+    environment:
+      - MONGO_URL=mongodb://db:27017
+      - CLIENT=http://localhost:4000
+    command: npm start
+
+  db:
+    image: mongo:5.0.5
+    ports:
+      - 27017:27017
+    volumes:
+      - mongo-data:/data/db
 
   nginx:
-    image: nginx:latest
-    ports:
-      - "8000:80"
-    volumes:
-      - ./nginx:/etc/nginx/conf.d/
     depends_on:
-      - frontend
       - backend
-    networks:
-      - web-net
+      - frontend
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: ./nginx
+    ports:
+      - "3050:80"
 
-networks:
-  web-net:
-    driver: bridge
+volumes:
+  mongo-data:
+    driver: local

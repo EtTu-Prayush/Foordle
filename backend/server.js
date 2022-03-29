@@ -1,42 +1,38 @@
-const express = require("express");
+const express = require('express');
 const app = express();
-const bodyParser = require("body-parser");
-const cors = require("cors");
-const mongoose = require("mongoose");
-const PORT = 8000;
-const DB_NAME = "tutorial";
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const mongoose = require('mongoose');
+const PORT = 4000;
+const DB_NAME = "Canteen";
 
-// routes
+// Routes
 var testAPIRouter = require("./routes/testAPI");
 var UserRouter = require("./routes/Users");
-var BuyerRouter = require("./routes/buyer");
-var loginRouter = require("./routes/login");
-var VendorRouter = require("./routes/vendor");
-var FoodRouter = require("./routes/food");
-var OrderRouter = require("./routes/order");
-var ShopRouter = require("./routes/shops");
+// var FoodRouter = require("./routes/FoodItems");
+var BuyerRouter = require("./routes/BuyerRoutes");
+var VendorRouter = require("./routes/VendorRoutes");
+
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Connection to MongoDB
-mongoose.connect(
-  "mongodb+srv://karman:karman1232@cluster0.ogq3d.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
-);
+// mongoose.connect('mongodb://127.0.0.1:27017/' + DB_NAME, { useNewUrlParser: true });
+mongoose.connect('mongodb://db:27017/', { useNewUrlParser: true, useUnifiedTopology: true });
 const connection = mongoose.connection;
-connection.once("open", function () {
-  console.log("MongoDB database connection established successfully !");
-});
+connection.once('open', function() {
+    console.log("MongoDB database connection established successfully !");
+})
 
-// setup API endpoints
-app.use("/testAPI", testAPIRouter);
+// Setup API endpoints
+//app.use("/testAPI", testAPIRouter);
+
 app.use("/user", UserRouter);
+// app.use("/food", FoodRouter);
 app.use("/buyer", BuyerRouter);
-app.use("/login", loginRouter);
 app.use("/vendor", VendorRouter);
-app.use("/food", FoodRouter);
-app.use("/order", OrderRouter);
-app.use("/shops", ShopRouter);
-app.listen(PORT, function () {
-  console.log("Server is running on Port: " + PORT);
+
+app.listen(PORT, function() {
+    console.log("Server is running on Port: " + PORT);
 });

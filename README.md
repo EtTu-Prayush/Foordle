@@ -1,55 +1,37 @@
-# MERN Stack Boilerplate
+# Assignment 1
+
+# MERN Stack
+
+## Soveet Kumar Nayak 
+## 2020101086
+
+
+
+## Bonus Attempted
+
+* Email to the buyers on acceptance/rejection of their order.
+
+* Graphs to visualise batch-wise, age-wise distribution of completed orders.
+
+
 
 ## Installations
 
+### Email JS
 
-# Canteen Portal using MERN STACK
-
-### BONUS PARTS 
-
-- An email is sent to buyer in case the order is accepted or the order is rejected using emailjs
-- Implemented Fuzzy Search using FUSE.js
-
-### Hosted at :
-
-- Backend hosted at : https://jomato-portal.herokuapp.com/
-- Frontent hosted at : jomatokro.surge.sh
-
-### Node
-
-* For Linux:
+* For Linux in your frontend:
 ```
-curl -sL https://deb.nodesource.com/setup_13.x | sudo -E bash -
-sudo apt-get install -y nodejs
+npm i emailjs-com
 ```
 
-* For Mac:
+###  Chart MUI
+
+*For Linux in your frontend:
 ```
-brew install node
-```
-
-### MongoDB
-
-Install the community edition [here](https://docs.mongodb.com/manual/installation/#mongodb-community-edition-installation-tutorials).
-
-
-### React
-
-```
-npm install -g create-react-app
+npm i @devexpress/dx-react-chart-material-ui
 ```
 
-* To create a new React app:
-```
-create-react-app name_of_app
-```
-
-* To run the app, cd into the directory and do:
-```
-npm start
-```
-
-## Running the boilerplate
+### Running the code
 
 * Run Mongo daemon:
 ```
@@ -73,4 +55,3 @@ npm start
 ```
 
 Navigate to [http://localhost:3000/](http://localhost:3000/) in your browser.
-

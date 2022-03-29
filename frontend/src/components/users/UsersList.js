@@ -28,7 +28,7 @@ const UsersList = (props) => {
 
   useEffect(() => {
     axios
-      .get("api/user")
+      .get("/api/user")
       .then((response) => {
         setUsers(response.data);
         setSortedUsers(response.data);

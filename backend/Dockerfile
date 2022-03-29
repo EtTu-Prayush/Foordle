@@ -1,15 +1,11 @@
-FROM node:16 
-# set the working directory 
-# of the container 
-# path from the root dir 
-WORKDIR /backend 
-
-ENV PATH=/backend/node_modules/.bin:$PATH
-
-COPY package.json .
-RUN npm install
-# copy the files 
+FROM node:16.14
+# Set working directory
+WORKDIR /usr/app
+# Install app dependencies
+COPY package*.json ./
+RUN npm install -qyg nodemon@2.0.7
+RUN npm install -qy
+# Copy app to container
 COPY . .
-# 
-EXPOSE 8000
-CMD npm start
+# Run the "dev" script in package.json
+CMD ["npm", "run", "dev"]

@@ -4,47 +4,35 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import noodle from "../../images/peach-cat-cute.gif";
+import { useState } from "react";
 import * as React from "react";
-import axios from "axios";
-import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
+import ls from "local-storage";
+import { createTheme } from '@mui/material/styles';
+import { deepOrange } from "@mui/material/colors";
+import { yellow } from "@mui/material/colors";
+
+const theme = createTheme({
+    palette: {
+      primary: deepOrange,
+      secondary: yellow,
+    },
+});
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const refresh_storage = () => {
-    localStorage.setItem("email", "");
-    localStorage.setItem("password", "");
-    localStorage.setItem("status", "");
-    localStorage.setItem("user_type", "");
-    alert("Logout Success!");
-    window.location = "/";
+//  const [user, setUser] = React.useState(0); //0 for not logged in, 1 for buyer, 2 for vendor
+  const handlelogout = () => {
+    ls.set("user", "");
+    ls.set("usertype", 0);
+    ls.set("username", "");
+    ls.set("wallet", 0);
+    window.location="/";
   };
-
-  const [wallet, setWallet] = React.useState(0);
-  React.useEffect(() => {
-    if (localStorage.getItem("user_type") === "buyer") {
-      axios
-        .post("api/buyer/wallet_balance", {
-          email: localStorage.getItem("email"),
-        })
-        .then((res) => {
-          console.log(res.data);
-          setWallet(res.data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-    if (localStorage.getItem("status") === null) {
-      localStorage.setItem("email", "");
-      localStorage.setItem("password", "");
-      localStorage.setItem("status", "");
-      localStorage.setItem("status", "");
-    }
-  });
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="relative">
+      <AppBar position="static">
         <Toolbar>
           <Typography
             variant="h6"
@@ -52,88 +40,73 @@ const Navbar = () => {
             sx={{ cursor: "pointer" }}
             onClick={() => navigate("/")}
           >
-            Canteen Portal
+            <img src={noodle} alt="noodle" height="20" width="30" margin=""/> Canteen Portal <img src={noodle} alt="noodle" height="20" width="30" margin=""/>
           </Typography>
           <Box sx={{ flexGrow: 1 }} />
-          {localStorage.getItem("status") === "1" &&
-          localStorage.getItem("user_type") === "vendor" ? (
-            <Button color="inherit" onClick={() => navigate("/profile")}>
-              My Profile
-            </Button>
-          ) : null}
-          {localStorage.getItem("status") === "1" &&
-          localStorage.getItem("user_type") === "buyer" ? (
-            <Button color="inherit" onClick={() => navigate("/profile")}>
-              My Profile
-            </Button>
-          ) : null}
-          {localStorage.getItem("status") === "1" &&
-          localStorage.getItem("user_type") === "vendor" ? (
-            <Button color="inherit" onClick={() => navigate("/orders")}>
-              Orders
-            </Button>
-          ) : null}
-          {localStorage.getItem("status") === "" ? (
-            <Button color="inherit" onClick={() => navigate("/register")}>
-              Register
-            </Button>
-          ) : null}
-          {localStorage.getItem("status") === "" ? (
-            <Button color="inherit" onClick={() => navigate("/login")}>
-              Login
-            </Button>
-          ) : null}{" "}
-          {localStorage.getItem("user_type") === "vendor" &&
-          localStorage.getItem("status") === "1" ? (
-            <Button color="inherit" onClick={() => navigate("/foodList")}>
-              {" "}
-              Food Menu
-            </Button>
-          ) : null}
-          {localStorage.getItem("user_type") === "vendor" &&
-          localStorage.getItem("status") === "1" ? (
-            <Button color="inherit" onClick={() => navigate("/additem")}>
-              {" "}
-              Add Item
-            </Button>
-          ) : null}
-          {localStorage.getItem("user_type") === "vendor" &&
-          localStorage.getItem("status") === "1" ? (
-            <Button color="inherit" onClick={() => navigate("/stats")}>
-              {" "}
-              Statistics
-            </Button>
-          ) : null}
-          {localStorage.getItem("user_type") === "buyer" &&
-          localStorage.getItem("status") === "1" ? (
-            <Button color="inherit" onClick={() => navigate("/userOrder")}>
-              ORDER NOW
-            </Button>
-          ) : null}
-          {localStorage.getItem("user_type") === "buyer" &&
-          localStorage.getItem("status") === "1" ? (
-            <Button color="inherit" onClick={() => navigate("/myOrder")}>
-              VIEW ORDERS
-            </Button>
-          ) : null}
-          {localStorage.getItem("user_type") === "buyer" &&
-          localStorage.getItem("status") === "1" ? (
-            <Button color="inherit" onClick={() => navigate("/favorite")}>
-              FAVORITES
-            </Button>
-          ) : null}
-          {localStorage.getItem("status") === "1" &&
-          localStorage.getItem("user_type") === "buyer" ? (
-            <Button color="inherit" onClick={() => navigate("/wallet")}>
-              <AccountBalanceWalletIcon> Wallet</AccountBalanceWalletIcon>
-              <Box sx={{ ml: 1 }}>{wallet}</Box>
-            </Button>
-          ) : null}
-          {localStorage.getItem("status") === "1" ? (
-            <Button color="inherit" onClick={() => refresh_storage()}>
-              Logout
-            </Button>
-          ) : null}
+          {/* <Button color="inherit" onClick={() => navigate("/users")}>
+            Users
+          </Button> */}
+          { ls.get("usertype") === 0 ? 
+          <Box>
+          <Button color="inherit" onClick={() => navigate("/login")}>
+            Login
+          </Button> 
+          <Button color="inherit" onClick={() => navigate("/register")}>
+            Register
+          </Button>
+          </Box>
+          : ls.get("usertype") === 1 ?
+          <Box>
+          <Button color="inherit" onClick={() => navigate("/dashboard")}>
+            Dashboard
+          </Button>
+          <Button color="inherit" onClick={() => navigate("/favourites")}>
+            Favourites
+          </Button>
+          <Button color="inherit" onClick={() => navigate("/myorders")}>
+            My Orders
+          </Button>
+          <Button color="inherit" onClick={() => navigate("/wallet")}>
+            Wallet
+          </Button>
+          <Button color="inherit" onClick={() => navigate("/profile")}>
+            Profile
+          </Button>
+          <Button color="inherit" onClick={handlelogout}>
+            Logout
+          </Button>
+          </Box>
+          :
+          <Box>
+          <Button color="inherit" onClick={() => navigate("/menu")}>
+            Menu
+          </Button>
+          <Button color="inherit" onClick={() => navigate("/orders")}>
+            Orders
+          </Button>
+          <Button color="inherit" onClick={() => navigate("/statistics")}>
+            Statistics
+          </Button>
+          <Button color="inherit" onClick={() => navigate("/profile")}>
+            Profile
+          </Button>
+          <Button color="inherit" onClick={handlelogout}>
+            Logout
+          </Button>
+          </Box>
+          }
+          {/* <Button color="inherit" onClick={() => navigate("/login")}>
+            Login
+          </Button>
+          <Button color="inherit" onClick={() => navigate("/register")}>
+            Register
+          </Button>
+          }
+          else if(user === 1) {
+          <Button color="inherit" onClick={() => navigate("/profile")}>
+            My Profile
+          </Button>
+          } */}
         </Toolbar>
       </AppBar>
     </Box>

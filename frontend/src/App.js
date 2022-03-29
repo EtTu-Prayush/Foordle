@@ -3,18 +3,27 @@ import "./App.css";
 
 import UsersList from "./components/users/UsersList";
 import Home from "./components/common/Home";
-import Register from "./components/common/Register";
 import Navbar from "./components/templates/Navbar";
-import Login from "./components/common/login";
-import Profile from "./components/common/profile";
-import Wallet from "./components/common/wallet";
-import FoodMenu from "./components/common/food_menu";
-import AddItem from "./components/common/additem";
-import Order from "./components/common/order3"
-import Orderuser from "./components/common/buyer_order_now";
-import MyOrder from "./components/common/buyer_show_order";
-import Favorite from "./components/common/favorites";
-import Stats from "./components/common/stats";
+import Profile from "./components/users/Profile";
+import SignInSide from "./components/templates/Login";
+import SignUp from "./components/templates/Register";
+import BasicSelect from "./components/templates/Register";
+import MyProfile from "./components/templates/Profile";
+
+
+//buyer
+import Wallet from "./components/buyer/Wallet";
+import List from "./components/buyer/BuyerDashboard"
+import MyOrders from "./components/buyer/Orders";
+import Fav from "./components/buyer/Favourites";
+
+//vendor
+import Orders from "./components/vendor/Orders";
+import VStatistics from "./components/vendor/Statistics";
+import Table from "./components/vendor/Menu";
+import BasicTable from "./components/vendor/Orders";
+import Editing from "./components/vendor/EditItem";
+
 const Layout = () => {
   return (
     <div>
@@ -33,18 +42,19 @@ function App() {
         <Route path="/" element={<Layout />}>
           <Route path="/" element={<Home />} />
           <Route path="users" element={<UsersList />} />
-          <Route path="login" element={<Login />} />
-          <Route path="register" element={<Register />} />
-          <Route path="profile" element={<Profile />} />
-          <Route path="wallet" element={<Wallet />} />
-          <Route path="foodList" element={<FoodMenu />} />
-          <Route path="addItem" element={<AddItem />} />
-          <Route path="orders" element={<Order />} />
-          <Route path="userOrder" element={<Orderuser />} />
-          <Route path="myOrder" element={<MyOrder />} />
-          <Route path="favorite" element={<Favorite />} />
-          <Route path="stats" element={<Stats />} />
+          <Route path="login" element={<SignInSide />} />
+          <Route path="register" element={<BasicSelect />} />
+          <Route path="profile" element={<MyProfile />} />
 
+          <Route path="wallet" element={<Wallet />} />
+          <Route path="myorders" element={<MyOrders />} />
+          <Route path="dashboard" element={<List />} />
+          <Route path="favourites" element={<Fav />} />
+
+          <Route path="statistics" element={<VStatistics />} />
+          <Route path="orders" element={<BasicTable />} />
+          <Route path="menu" element={<Table />} />
+          <Route path="edit" element={<Editing />} />
         </Route>
       </Routes>
     </BrowserRouter>
