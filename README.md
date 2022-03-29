@@ -2,8 +2,9 @@
 
 # MERN Stack
 
-## Soveet Kumar Nayak 
-## 2020101086
+## Prayush Rathore
+## 2020114009
+
 
 
 
