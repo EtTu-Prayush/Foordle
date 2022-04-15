@@ -1,14 +1,7 @@
-# Assignment 1
-
-# MERN Stack
-
-## Prayush Rathore
-## 2020114009
+### Assignment 1 - MERN Stack Food Ordering Protal
 
 
-
-
-## Bonus Attempted
+##### Extra Features Attempted
 
 * Email to the buyers on acceptance/rejection of their order.
 
@@ -16,23 +9,23 @@
 
 
 
-## Installations
+#### Installations
 
-### Email JS
+##### Email JS
 
 * For Linux in your frontend:
 ```
 npm i emailjs-com
 ```
 
-###  Chart MUI
+#####  Chart MUI
 
 *For Linux in your frontend:
 ```
 npm i @devexpress/dx-react-chart-material-ui
 ```
 
-### Running the code
+##### Running the code
 
 * Run Mongo daemon:
 ```
